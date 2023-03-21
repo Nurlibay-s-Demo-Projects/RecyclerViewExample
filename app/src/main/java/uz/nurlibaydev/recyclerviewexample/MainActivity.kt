@@ -21,11 +21,16 @@ class MainActivity : AppCompatActivity() {
         binding.rvPerson.adapter = myAdapter
         binding.rvPerson.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
-        val persons = mutableListOf<Person>()
-        repeat(20) {
-            persons.add(Person("Name ${it + 1}", "Surname ${it + 1}"))
+        val items = mutableListOf<Any>()
+        for (i in 1..20) {
+            if (i % 5 == 0) {
+                items.add(Ads("Title $i"))
+            } else {
+                items.add(Person("Name $i", "Surname $i"))
+            }
         }
-        myAdapter.list.addAll(persons)
+
+        myAdapter.list.addAll(items)
         myAdapter.setOnItemClickListener {
             Toast.makeText(this, "$it", Toast.LENGTH_SHORT).show()
         }
@@ -45,20 +50,21 @@ class MainActivity : AppCompatActivity() {
                     return@setOnMenuItemClickListener true
                 }
                 R.id.item_remove -> {
-
                     val dialog = AlertDialog.Builder(this)
-                    dialog.setTitle("Remove Item")
-                    dialog.setMessage("Aniq óshirejaqsańba?")
-                    dialog.setPositiveButton("AWA") { dialog, id ->
-                        myAdapter.removeItem(person, position)
-                        Toast.makeText(this, "Óshirildi", Toast.LENGTH_SHORT).show()
-                        dialog.dismiss()
+                    dialog.apply {
+                        setTitle("Remove Item")
+                        setMessage("Aniq óshirejaqsańba?")
+                        setPositiveButton("AWA") { dialog, id ->
+                            myAdapter.removeItem(person, position)
+                            Toast.makeText(this@MainActivity, "Óshirildi", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }
+                        setNegativeButton("YAQ") { dialog, id ->
+                            Toast.makeText(this@MainActivity, "Óshirilmedi", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }
+                        show()
                     }
-                    dialog.setNegativeButton("YAQ") { dialog, id ->
-                        Toast.makeText(this, "Óshirilmedi", Toast.LENGTH_SHORT).show()
-                        dialog.dismiss()
-                    }
-                    dialog.show()
                     return@setOnMenuItemClickListener true
                 }
                 else -> {

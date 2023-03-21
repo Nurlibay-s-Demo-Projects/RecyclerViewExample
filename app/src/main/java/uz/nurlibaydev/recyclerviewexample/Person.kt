@@ -5,6 +5,6 @@ package uz.nurlibaydev.recyclerviewexample
  */
 
 data class Person(
-    val name: String,
-    val surname: String,
+    var name: String = "",
+    var surname: String = "",
 )
